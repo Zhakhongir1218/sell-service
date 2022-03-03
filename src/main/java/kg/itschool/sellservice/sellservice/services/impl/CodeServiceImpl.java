@@ -7,6 +7,7 @@ import kg.itschool.sellservice.sellservice.mappers.UserMapper;
 import kg.itschool.sellservice.sellservice.models.dtos.CodesDTOS.CodeDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.UserDTOS.UserDTO;
 import kg.itschool.sellservice.sellservice.models.entities.Code;
+import kg.itschool.sellservice.sellservice.models.entities.User;
 import kg.itschool.sellservice.sellservice.models.enums.CodeStatus;
 import kg.itschool.sellservice.sellservice.repositories.CodeRepo;
 import kg.itschool.sellservice.sellservice.services.CodeService;
@@ -37,43 +38,42 @@ public class CodeServiceImpl implements CodeService {
     private UserService userService;
 
 
-
-
     //Метод генерирует и отправляет письмо пользователю по его логину
     //одновременно сохраняя зашифрованные данные в БД.
     @Override
     public ResponseEntity<?> generateCodeAndSendIt(UserDTO userDTO) {
-
+        User user = UserMapper.INSTANCE.toUser(userDTO);
+        Code code = codeRepo.findByUserAndCodeStatus(user);
+        code.setCode_status(CodeStatus.CANCELLED);
+        codeRepo.save(code);
         userDTO = userService.findUserByLogin(userDTO.getLogin());
         CodeDTO codeDTO = new CodeDTO();
-        int codeRandomizer = (int) (((Math.random() * 9999) + 1000));
+        int codeRandomizer = 1000 + (int) (((Math.random() * 9999)));
         String hashedCode = BCrypt.hashpw(Integer.toString(codeRandomizer), gensalt());
-
         codeDTO.setStart_date(LocalDateTime.now());
         codeDTO.setEnd_date(codeDTO.getStart_date().plusMinutes(4));
         codeDTO.setCode_status(CodeStatus.NEW);
         codeDTO.setCode(hashedCode);
-        codeDTO.setId_user(userDTO.getId());
-        Code code = CodeMapper.INSTANCE.toCode(codeDTO);
-        code.setUser(UserMapper.INSTANCE.toUser(userDTO));
+        codeDTO.setUser(userDTO);
+        code = CodeMapper.INSTANCE.toCode(codeDTO);
         codeRepo.save(code);
         sendSimpleMessage.sendSimpleMessage(userDTO.getLogin(), Integer.toString(codeRandomizer));
 
         return ResponseEntity.ok("Код успешно отправлен");
     }
 
-    public ResponseEntity<?> codeConfirmation(Integer codeConf, String login){
-        String hashedCode = BCrypt.hashpw(Integer.toString(codeConf), gensalt());
+    public ResponseEntity<?> codeConfirmation(Integer codef, String login) {
+        String hashedCode = BCrypt.hashpw(Integer.toString(codef), gensalt());
         UserDTO userDTO = userService.findUserByLogin(login);
 
         Code code = codeRepo.findByUser(userDTO);
-        if(Objects.isNull(code)){
+        if (Objects.isNull(code)) {
             return new ResponseEntity<>(new UserNotFoundException("Пользователь не найден"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        if(!code.getCode().equals(hashedCode)){
+        if (!code.getCode().equals(hashedCode)) {
             return new ResponseEntity<>(new UserNotFoundException("Введенный вами код недействителен"), HttpStatus.CONFLICT);
         }
-        if(code.getStart_date().isAfter(code.getEnd_date())){
+        if (code.getStart_date().isAfter(code.getEnd_date())) {
             code.setCode_status(CodeStatus.CANCELLED);
             codeRepo.save(code);
             throw new UserNotFoundException("Введенный код неверный, попробуйте еще раз");

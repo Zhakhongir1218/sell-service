@@ -4,10 +4,7 @@ import kg.itschool.sellservice.sellservice.models.entities.base_entity.Base_Enti
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -21,7 +18,7 @@ public class Product extends Base_Entity {
 
     String barcode;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_categories")
     Category category;
 

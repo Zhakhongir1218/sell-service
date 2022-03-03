@@ -1,5 +1,6 @@
 package kg.itschool.sellservice.sellservice.controllers;
 
+import kg.itschool.sellservice.sellservice.models.dtos.CodesDTOS.CodeDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.UserDTOS.UserDTO;
 import kg.itschool.sellservice.sellservice.services.CodeService;
 import kg.itschool.sellservice.sellservice.services.UserService;
@@ -30,9 +31,9 @@ public class UserController {
 
 
     @PostMapping("/confirm")
-    public ResponseEntity<?> codeConfirmation(@RequestBody Integer code, String login){
+    public ResponseEntity<?> codeConfirmation(@RequestParam Integer code, @RequestParam String login){
 
-        return codeService.codeConfirmation(code,login);
+        return codeService.codeConfirmation(code, login);
     }
 
 

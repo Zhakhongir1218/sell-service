@@ -6,5 +6,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface CodeService {
     ResponseEntity<?> generateCodeAndSendIt(UserDTO userDTO);
-    ResponseEntity<?> codeConfirmation(Integer codeConf, String login);
+    ResponseEntity<?> codeConfirmation(Integer codef, String login);
 }

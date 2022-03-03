@@ -24,6 +24,6 @@ public class CodeDTO  {
 
     CodeStatus code_status;
 
-    Long id_user;
+    UserDTO user;
 
 }

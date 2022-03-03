@@ -35,6 +35,9 @@ public class ProductServiceImpl implements ProductService {
         product.setBarcode(generateBarcode());
         product.setActive(true);
         product.setCategory(CategoryMapper.INSTANCE.toCategory(productDTO.getCategory()));
+        if(Objects.isNull(product.getCategory())){
+            return new ResponseEntity<>(new UserNotFoundException("Вы не ввели категорию"), HttpStatus.CONFLICT);
+        }
         productRepo.save(product);
         return ResponseEntity.ok("Продукт успешно добавлен в Базу данных");
     }
