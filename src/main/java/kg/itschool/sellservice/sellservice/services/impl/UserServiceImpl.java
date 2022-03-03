@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findUserByLogin(UserDTO userDTO){
-        User user =  userRepo.findByLogin(userDTO.getLogin());
+    public UserDTO findUserByLogin(String login){
+        User user =  userRepo.findByLogin(login);
         if(Objects.isNull(user)){
             throw new UserALreadyExistException("Данный пользователь не сущетсвует");
         }

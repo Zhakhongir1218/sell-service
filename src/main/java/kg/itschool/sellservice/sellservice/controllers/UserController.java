@@ -30,7 +30,7 @@ public class UserController {
 
 
     @PostMapping("/confirm")
-    public ResponseEntity<?> codeConfirmation(@RequestParam Integer code, String login){
+    public ResponseEntity<?> codeConfirmation(@RequestBody Integer code, String login){
 
         return codeService.codeConfirmation(code,login);
     }

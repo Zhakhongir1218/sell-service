@@ -8,7 +8,7 @@ public interface UserService {
 
     ResponseEntity<?> createNewUser(UserDTO userDTO);
 
-    UserDTO findUserByLogin(UserDTO userDTO);
+    UserDTO findUserByLogin(String login);
 
 
 }

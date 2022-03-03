@@ -44,9 +44,9 @@ public class CodeServiceImpl implements CodeService {
     @Override
     public ResponseEntity<?> generateCodeAndSendIt(UserDTO userDTO) {
 
-        userDTO = userService.findUserByLogin(userDTO);
+        userDTO = userService.findUserByLogin(userDTO.getLogin());
         CodeDTO codeDTO = new CodeDTO();
-        int codeRandomizer = (int) (((Math.random() * 9999 - 1000) + 1000) + 1);
+        int codeRandomizer = (int) (((Math.random() * 9999) + 1000));
         String hashedCode = BCrypt.hashpw(Integer.toString(codeRandomizer), gensalt());
 
         codeDTO.setStart_date(LocalDateTime.now());
@@ -64,9 +64,14 @@ public class CodeServiceImpl implements CodeService {
 
     public ResponseEntity<?> codeConfirmation(Integer codeConf, String login){
         String hashedCode = BCrypt.hashpw(Integer.toString(codeConf), gensalt());
-        Code code = codeRepo.findByCodeEquals(hashedCode);
+        UserDTO userDTO = userService.findUserByLogin(login);
+
+        Code code = codeRepo.findByUser(userDTO);
         if(Objects.isNull(code)){
             return new ResponseEntity<>(new UserNotFoundException("Пользователь не найден"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if(!code.getCode().equals(hashedCode)){
+            return new ResponseEntity<>(new UserNotFoundException("Введенный вами код недействителен"), HttpStatus.CONFLICT);
         }
         if(code.getStart_date().isAfter(code.getEnd_date())){
             code.setCode_status(CodeStatus.CANCELLED);
