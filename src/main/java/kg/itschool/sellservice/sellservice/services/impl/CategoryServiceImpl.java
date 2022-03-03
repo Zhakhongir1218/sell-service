@@ -23,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ResponseEntity<?> createCategory(CategoryDTO categoryDTO) {
         Category category = CategoryMapper.INSTANCE.toCategory(categoryDTO);
-        Category containing = categoryRepo.findByName(category);
+        Category containing = categoryRepo.findByName(category.getName());
         if(Objects.isNull(containing)){
             categoryRepo.save(category);
         }else{
@@ -31,5 +31,11 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         return ResponseEntity.ok("Новая категория " + category.getName()+ " успешно сохранена");
+    }
+
+    @Override
+    public Category findCategoryById(Long id) {
+        return categoryRepo.findDistinctById(id);
+
     }
 }
