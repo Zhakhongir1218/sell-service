@@ -46,6 +46,7 @@ public class CodeServiceImpl implements CodeService {
 
     @Value("${jwtSecret}")
     private String secretKey;
+    @Autowired
     private RequestService requestService;
 
 
