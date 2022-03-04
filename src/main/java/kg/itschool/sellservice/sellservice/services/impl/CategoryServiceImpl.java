@@ -7,6 +7,7 @@ import kg.itschool.sellservice.sellservice.models.entities.Category;
 import kg.itschool.sellservice.sellservice.repositories.CategoryRepo;
 import kg.itschool.sellservice.sellservice.services.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,9 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-
-    private final CategoryRepo categoryRepo;
+    @Autowired
+    private CategoryRepo categoryRepo;
 
 
     @Override

@@ -45,6 +45,10 @@ public class UserServiceImpl implements UserService {
         return UserMapper.INSTANCE.toUserDTO(user);
     }
 
+    @Override
+    public void saveUser(User user) {
+        userRepo.saveAndFlush(user);
+    }
 
 
 }

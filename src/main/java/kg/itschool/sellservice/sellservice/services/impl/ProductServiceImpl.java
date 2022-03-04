@@ -10,6 +10,7 @@ import kg.itschool.sellservice.sellservice.repositories.ProductRepo;
 import kg.itschool.sellservice.sellservice.services.CategoryService;
 import kg.itschool.sellservice.sellservice.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,12 @@ import java.util.Objects;
 
 
 @Service
-@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
+    @Autowired
+    private ProductRepo productRepo;
+    @Autowired
+    private  CategoryService categoryService;
 
-    private final ProductRepo productRepo;
-    private final CategoryService categoryService;
 
     @Override
     public ResponseEntity<?> createNewProduct(ProductDTO productDTO) {

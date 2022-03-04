@@ -9,10 +9,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class SendSimpleMessageImpl implements SendSimpleMessage {
-
-    private final JavaMailSender javaMailSender;
+    @Autowired
+    private  JavaMailSender javaMailSender;
 
     @Override
     public void sendSimpleMessage(String to, String text) {

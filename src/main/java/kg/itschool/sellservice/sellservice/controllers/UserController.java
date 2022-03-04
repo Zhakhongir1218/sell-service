@@ -31,9 +31,14 @@ public class UserController {
 
 
     @PostMapping("/confirm")
-    public ResponseEntity<?> codeConfirmation(@RequestParam Integer code, @RequestParam String login){
+    public ResponseEntity<?> codeConfirmation(@RequestParam String code, @RequestParam String login){
 
         return codeService.codeConfirmation(code, login);
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<?> verifyToken(@RequestHeader String token){
+        return codeService.verifyToken(token);
     }
 
 
