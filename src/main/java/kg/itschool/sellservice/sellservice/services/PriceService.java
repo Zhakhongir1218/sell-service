@@ -4,5 +4,5 @@ import kg.itschool.sellservice.sellservice.models.dtos.PriceDTOS.PriceDTO;
 import org.springframework.http.ResponseEntity;
 
 public interface PriceService {
-    ResponseEntity<?> createNewPrice(PriceDTO priceDTO);
+    ResponseEntity<?> createNewPrice(String token,PriceDTO priceDTO);
 }

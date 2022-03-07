@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface ProductService {
-    ResponseEntity<?> createNewProduct(ProductDTO productDTO);
+    ResponseEntity<?> createNewProduct(String token,ProductDTO productDTO);
 
     List<Product> getAllCategories();
 }

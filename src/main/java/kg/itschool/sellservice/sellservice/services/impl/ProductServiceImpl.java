@@ -7,6 +7,7 @@ import kg.itschool.sellservice.sellservice.models.dtos.ProductDTOS.ProductDTO;
 import kg.itschool.sellservice.sellservice.models.entities.Product;
 import kg.itschool.sellservice.sellservice.repositories.ProductRepo;
 import kg.itschool.sellservice.sellservice.services.CategoryService;
+import kg.itschool.sellservice.sellservice.services.CodeService;
 import kg.itschool.sellservice.sellservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,11 +24,16 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepo productRepo;
     @Autowired
     private  CategoryService categoryService;
+    @Autowired
+    private CodeService codeService;
 
 
     @Override
-    public ResponseEntity<?> createNewProduct(ProductDTO productDTO) {
-
+    public ResponseEntity<?> createNewProduct(String token,ProductDTO productDTO) {
+        ResponseEntity<?> responseEntity = codeService.verifyToken(token);
+        if (!responseEntity.getStatusCode().equals(HttpStatus.OK)){
+            return responseEntity;
+        }
         Product product = ProductMapper.INSTANCE.toProduct(productDTO);
         Product containing = productRepo.findByName(product.getName());
         if (Objects.nonNull(containing)) {

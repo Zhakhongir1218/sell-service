@@ -6,7 +6,7 @@ import kg.itschool.sellservice.sellservice.models.entities.Category;
 import org.springframework.http.ResponseEntity;
 
 public interface CategoryService {
-    ResponseEntity<?> createCategory(CategoryDTO categoryDTO);
+    ResponseEntity<?> createCategory(String token,CategoryDTO categoryDTO);
 
     Category findCategoryById(Long id);
 }

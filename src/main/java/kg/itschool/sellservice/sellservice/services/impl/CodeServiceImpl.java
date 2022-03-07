@@ -117,7 +117,7 @@ public class CodeServiceImpl implements CodeService {
         Calendar tokensTimeLive =
                 Calendar.getInstance();
         tokensTimeLive
-                .add(Calendar.MINUTE, 4);
+                .add(Calendar.MINUTE, 20);
 
         String token = Jwts.builder()
                 .claim("login", login)

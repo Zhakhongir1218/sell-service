@@ -7,7 +7,6 @@ import kg.itschool.sellservice.sellservice.models.entities.User;
 import kg.itschool.sellservice.sellservice.repositories.UserRepo;
 import kg.itschool.sellservice.sellservice.services.CodeService;
 import kg.itschool.sellservice.sellservice.services.UserService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

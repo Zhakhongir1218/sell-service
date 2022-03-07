@@ -6,6 +6,7 @@ import kg.itschool.sellservice.sellservice.models.dtos.CategoriesDTOS.CategoryDT
 import kg.itschool.sellservice.sellservice.models.entities.Category;
 import kg.itschool.sellservice.sellservice.repositories.CategoryRepo;
 import kg.itschool.sellservice.sellservice.services.CategoryService;
+import kg.itschool.sellservice.sellservice.services.CodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepo categoryRepo;
 
+    @Autowired
+    private CodeService codeService;
+
 
     @Override
-    public ResponseEntity<?> createCategory(CategoryDTO categoryDTO) {
+    public ResponseEntity<?> createCategory(String token, CategoryDTO categoryDTO) {
+        ResponseEntity<?> responseEntity = codeService.verifyToken(token);
+        if (!responseEntity.getStatusCode().equals(HttpStatus.OK)){
+            return responseEntity;
+        }
         Category category = CategoryMapper.INSTANCE.toCategory(categoryDTO);
         Category containing = categoryRepo.findByName(category.getName());
         if(Objects.isNull(containing)){
