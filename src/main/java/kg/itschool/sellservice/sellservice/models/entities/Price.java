@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "prces")
+@Table(name = "prices")
 public class Price extends Base_Entity {
 
     Double price;
