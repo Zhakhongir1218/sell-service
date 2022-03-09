@@ -55,6 +55,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    public Product findProductById(Long id){
+        return productRepo.findProductById(id);
+    }
+
+
     private String generateBarcode() {
         String barcodeRandomizerFirstPart = String.valueOf(100000 + (long) (((Math.random() * 999999))));
         String barcodeRandomizerSecondPart = String.valueOf(100000 + (long) (((Math.random() * 999999))));

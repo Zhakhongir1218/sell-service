@@ -1,6 +1,7 @@
 package kg.itschool.sellservice.sellservice.controllers;
 
 import kg.itschool.sellservice.sellservice.models.dtos.CategoriesDTOS.CategoryDTO;
+import kg.itschool.sellservice.sellservice.models.dtos.PriceDTOS.PriceDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.ProductDTOS.ProductDTO;
 import kg.itschool.sellservice.sellservice.models.entities.Product;
 import kg.itschool.sellservice.sellservice.services.CategoryService;
@@ -40,5 +41,12 @@ public class ProductController {
     public List<Product> getAllProducts() {
         return productService.getAllCategories();
     }
+
+    @GetMapping("/getActualPrice")
+    public PriceDTO getActualPrice(@RequestParam Long id){
+        return priceService.getActualPrice(id);
+
+    }
+
 
 }

@@ -10,4 +10,6 @@ public interface ProductService {
     ResponseEntity<?> createNewProduct(String token,ProductDTO productDTO);
 
     List<Product> getAllCategories();
+    Product findProductById(Long id);
+
 }
