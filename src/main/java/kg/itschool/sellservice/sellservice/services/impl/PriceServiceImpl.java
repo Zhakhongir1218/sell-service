@@ -2,9 +2,7 @@ package kg.itschool.sellservice.sellservice.services.impl;
 
 import kg.itschool.sellservice.sellservice.exceptions.UserNotFoundException;
 import kg.itschool.sellservice.sellservice.mappers.PriceMapper;
-import kg.itschool.sellservice.sellservice.mappers.ProductMapper;
 import kg.itschool.sellservice.sellservice.models.dtos.PriceDTOS.PriceDTO;
-import kg.itschool.sellservice.sellservice.models.dtos.ProductDTOS.ProductDTO;
 import kg.itschool.sellservice.sellservice.models.entities.Price;
 import kg.itschool.sellservice.sellservice.models.entities.Product;
 import kg.itschool.sellservice.sellservice.repositories.PriceRepo;
@@ -41,6 +39,9 @@ public class PriceServiceImpl implements PriceService {
 
         if (priceDTO.getPrice() <= 0) {
             return new ResponseEntity<>(new UserNotFoundException("Указанная цена не может быть ниже нуля!"), HttpStatus.CONFLICT);
+        }
+        if(priceDTO.getStart_date().isAfter(priceDTO.getEnd_date())){
+            return new ResponseEntity<>(new UserNotFoundException("дата начала должна быть раньше чем дата окончания"),HttpStatus.CONFLICT);
         }
         if (priceDTO.getEnd_date().isBefore(LocalDateTime.now())) {
             return new ResponseEntity<>(new UserNotFoundException("Крайний срок указанной цены должен быть позднее сегодняшнего дня"), HttpStatus.CONFLICT);
