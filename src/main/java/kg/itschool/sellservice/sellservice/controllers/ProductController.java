@@ -42,11 +42,7 @@ public class ProductController {
         return productService.getAllCategories();
     }
 
-    @GetMapping("/getActualPrice")
-    public PriceDTO getActualPrice(@RequestParam Long id){
-        return priceService.getActualPrice(id);
 
-    }
 
 
 }

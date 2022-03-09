@@ -17,4 +17,10 @@ public class PriceController {
     public ResponseEntity<?> createNewPrice(@RequestHeader String token, @RequestBody PriceDTO priceDTO){
         return priceService.createNewPrice(token, priceDTO);
     }
+
+    @GetMapping("/getActualPrice")
+    public PriceDTO getActualPrice(@RequestParam Long id){
+        return priceService.getActualPrice(id);
+
+    }
 }
