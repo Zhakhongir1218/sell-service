@@ -24,7 +24,7 @@ public class OperationDetailsDTO extends Base_Entity {
 
     OperationDTO operationDTO;
 
-    Integer amount;
+    Double amount;
 
     Integer quantity;
 }

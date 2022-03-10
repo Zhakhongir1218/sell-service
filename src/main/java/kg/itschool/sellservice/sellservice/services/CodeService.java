@@ -8,5 +8,6 @@ public interface CodeService {
     ResponseEntity<?> generateCodeAndSendIt(UserDTO userDTO);
     ResponseEntity<?> codeConfirmation(String codef, String login);
     ResponseEntity<?> verifyToken(String token);
+    UserDTO findByLogin(String login);
 
 }

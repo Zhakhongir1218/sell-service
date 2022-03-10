@@ -154,6 +154,10 @@ public class CodeServiceImpl implements CodeService {
         }
     }
 
+    public UserDTO findByLogin(String login){
+        return userService.findUserByLogin(login);
+    }
+
     public boolean userBlockDateChecking(UserDTO userResponseDTO) {
         if (Objects.nonNull(userResponseDTO.getBlock_date())){
             return LocalDateTime.now().isBefore(userResponseDTO.getBlock_date());

@@ -12,4 +12,5 @@ public interface ProductService {
     List<Product> getAllCategories();
     Product findProductById(Long id);
 
+    ProductDTO findProductByBarcode(String barcode);
 }

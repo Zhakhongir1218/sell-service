@@ -59,6 +59,11 @@ public class ProductServiceImpl implements ProductService {
         return productRepo.findProductById(id);
     }
 
+    @Override
+    public ProductDTO findProductByBarcode(String barcode) {
+        return ProductMapper.INSTANCE.toProductDTO(productRepo.findDistinctByBarcode(barcode));
+    }
+
 
     private String generateBarcode() {
         String barcodeRandomizerFirstPart = String.valueOf(100000 + (long) (((Math.random() * 999999))));
