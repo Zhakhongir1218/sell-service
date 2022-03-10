@@ -65,4 +65,5 @@ public class ProductServiceImpl implements ProductService {
         String barcodeRandomizerSecondPart = String.valueOf(100000 + (long) (((Math.random() * 999999))));
         return barcodeRandomizerFirstPart.concat(barcodeRandomizerSecondPart);
     }
+
 }
