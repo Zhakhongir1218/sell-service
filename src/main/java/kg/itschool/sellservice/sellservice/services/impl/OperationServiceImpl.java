@@ -146,7 +146,37 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public ResponseEntity<?> payment(String token, Long operationId, double cash) {
-        return null;
+        ResponseEntity<?> responseEntity =
+                codeService.verifyToken(token);
+
+        if (!responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+
+            return responseEntity;
+        }
+
+        Operation operation = operationRepo.findOperationById(operationId);
+
+        if (Objects.isNull(operation)) {
+            return new ResponseEntity<>(
+                    new ErrorResponse("Не найдена операция!"
+                            , "Вы ввели некорректный ID операции!")
+                    , HttpStatus.NOT_FOUND);
+        }
+
+        double change = cash - operation.getTotal_price();
+
+        if (change < 0) {
+            return new ResponseEntity<>(
+                    new ErrorResponse("Недостаточно средств для проведения операции!", null)
+                    , HttpStatus.CONFLICT);
+        }
+
+        operation.setCash(cash);
+        operation.setChange(change);
+
+        operationRepo.save(operation);
+
+        return ResponseEntity.ok(OperationMapper.INSTANCE.toOperationDTO(operation));
     }
 }
 

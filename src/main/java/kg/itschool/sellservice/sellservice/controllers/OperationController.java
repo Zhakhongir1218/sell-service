@@ -19,4 +19,9 @@ public class OperationController {
     public ResponseEntity<?> provideOperation(@RequestHeader String token, @RequestBody List<ForInputDataFromUserToOperations> sellingList ) {
         return operationService.provideOperation(token, sellingList);
     }
+
+    @GetMapping("/payment")
+    public ResponseEntity<?> payment(@RequestHeader String token, @RequestParam Long operationId, @RequestParam double cash) {
+        return operationService.payment(token, operationId, cash);
+    }
 }
