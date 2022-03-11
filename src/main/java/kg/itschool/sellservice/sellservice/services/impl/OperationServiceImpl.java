@@ -8,14 +8,12 @@ import kg.itschool.sellservice.sellservice.mappers.UserMapper;
 import kg.itschool.sellservice.sellservice.models.dtos.DiscountDTOS.DiscountDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.OperationDetailsDTOS.OperationDetailsDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.PriceDTOS.PriceDTO;
-import kg.itschool.sellservice.sellservice.models.dtos.ProductDTOS.FinalizationProductDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.ProductDTOS.ProductDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.UserDTOS.UserDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.operationsandpayments.ForInputDataFromUserToOperations;
 import kg.itschool.sellservice.sellservice.models.dtos.operationsandpayments.ReceiptDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.operationsandpayments.ReceiptDetailsDTO;
 import kg.itschool.sellservice.sellservice.models.entities.Operation;
-import kg.itschool.sellservice.sellservice.models.entities.Product;
 import kg.itschool.sellservice.sellservice.repositories.OperationRepo;
 import kg.itschool.sellservice.sellservice.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -104,9 +103,9 @@ public class OperationServiceImpl implements OperationService {
             receiptDetailsDto.setPrice(price.getPrice());
 
 
-            if(Objects.isNull(discount)){
+            if (Objects.isNull(discount)) {
                 receiptDetailsDto.setDiscount(0);
-            }else {
+            } else {
                 receiptDetailsDto.setDiscount(discount.getDiscount());
             }
 
@@ -173,6 +172,7 @@ public class OperationServiceImpl implements OperationService {
 
         operation.setCash(cash);
         operation.setChange(change);
+        operation.setAdd_date(LocalDateTime.now());
 
         operationRepo.save(operation);
 
