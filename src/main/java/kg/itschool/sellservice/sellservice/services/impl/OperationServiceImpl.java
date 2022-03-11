@@ -7,6 +7,7 @@ import kg.itschool.sellservice.sellservice.mappers.OperationMapper;
 import kg.itschool.sellservice.sellservice.mappers.UserMapper;
 import kg.itschool.sellservice.sellservice.models.dtos.DiscountDTOS.DiscountDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.OperationDetailsDTOS.OperationDetailsDTO;
+import kg.itschool.sellservice.sellservice.models.dtos.OperationsDTOS.OperationDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.PriceDTOS.PriceDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.ProductDTOS.ProductDTO;
 import kg.itschool.sellservice.sellservice.models.dtos.UserDTOS.UserDTO;
@@ -44,6 +45,7 @@ public class OperationServiceImpl implements OperationService {
 
     @Autowired
     private OperationDetailsService operationDetailsService;
+
     @Autowired
     private CodeService codeService;
 
@@ -60,11 +62,11 @@ public class OperationServiceImpl implements OperationService {
         List<OperationDetailsDTO> operationDetailDtoList = new ArrayList<>();
         List<ReceiptDetailsDTO> receiptDetailsDtoList = new ArrayList<>();
         ReceiptDTO receiptDTO = new ReceiptDTO();
-        UserDTO userDTO = new UserDTO();
-
+        UserDTO userDTO;
         ProductDTO productDTO;
         PriceDTO price;
         DiscountDTO discount;
+
 
         double amount;
         double totalAmount = 0;
@@ -88,8 +90,11 @@ public class OperationServiceImpl implements OperationService {
                 int tmpDiscount = (int) (price.getPrice() / discount.getDiscount());
                 amount = (price.getPrice() - tmpDiscount) * inputData.getQuantity();
             }
-            totalAmount = amount + totalAmount;
+            totalAmount += amount;
+
             operationDetailsDTO.setAmount(amount);
+
+
             operationDetailDtoList.add(operationDetailsDTO);
 
             ReceiptDetailsDTO receiptDetailsDto = new ReceiptDetailsDTO();
@@ -130,11 +135,18 @@ public class OperationServiceImpl implements OperationService {
 
         operation.setUser(UserMapper.INSTANCE.toUser(userDTO));
 
+
         operationRepo.save(operation);
 
         for (OperationDetailsDTO element : operationDetailDtoList) {
+            OperationDTO operationDTO = new OperationDTO();
+            operationDTO.setId(operation.getId());
+            operationDTO.setTotal_price(operation.getTotal_price());
+            operationDTO.setChange(operation.getChange());
+            operationDTO.setAdd_date(operation.getAdd_date());
+            operationDTO.setUserDTO(UserMapper.INSTANCE.toUserDTO(operation.getUser()));
 
-            element.setOperationDTO(OperationMapper.INSTANCE.toOperationDTO(operation));
+            element.setOperationDTO(operationDTO);
         }
 
         operationDetailsService.saveOperationDetails(operationDetailDtoList);
@@ -173,10 +185,16 @@ public class OperationServiceImpl implements OperationService {
         operation.setCash(cash);
         operation.setChange(change);
         operation.setAdd_date(LocalDateTime.now());
+        Jws<Claims> jwt = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        UserDTO userDTO = codeService.findByLogin((String) jwt.getBody().get(("login")));
+        operation.setUser(UserMapper.INSTANCE.toUser(userDTO));
 
         operationRepo.save(operation);
 
-        return ResponseEntity.ok(OperationMapper.INSTANCE.toOperationDTO(operation));
+        OperationDTO operationDTO = OperationMapper.INSTANCE.toOperationDTO(operation);
+        operationDTO.setUserDTO(UserMapper.INSTANCE.toUserDTO(operation.getUser()));
+
+        return ResponseEntity.ok(operationDTO);
     }
 }
 

@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OperationDTO {
 
+    Long id;
+
     LocalDateTime add_date;
 
     Double total_price;

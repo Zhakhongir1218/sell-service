@@ -18,7 +18,9 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OperationDetailsDTO extends Base_Entity {
+public class OperationDetailsDTO {
+
+    Long id;
 
     ProductDTO productDTO;
 
